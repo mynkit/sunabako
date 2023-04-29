@@ -25,7 +25,7 @@ osc.sendMsg("/s_new", \sine, ~scene1n2, 1, 0, \freq, 570.609/4, \amp, 0, \vibrat
 
 (
 var osc = NetAddr.new("localhost", 57110);
-var masterVol = 0;
+var masterVol = 0.0;
 
 osc.sendMsg("/n_set", ~scene1n1, \amp, 0.9*masterVol);
 osc.sendMsg("/n_set", ~scene1n2, \amp, 0.9*masterVol);

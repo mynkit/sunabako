@@ -81,8 +81,8 @@ osc.sendMsg("/s_new", \background, ~backgroundNode, 1, 0, \amp, 0);
 
 (
 var osc = NetAddr.new("localhost", 57110);
-osc.sendMsg("/n_set", ~rainNode, \amp, 0);
-osc.sendMsg("/n_set", ~backgroundNode, \amp, 0);
+osc.sendMsg("/n_set", ~rainNode, \amp, 1.5);
+osc.sendMsg("/n_set", ~backgroundNode, \amp, 1);
 )
 
 // ---------scene1---------
@@ -133,7 +133,7 @@ osc.sendMsg("/s_new", \sine, ~scene1n5, 1, 0, \freq, 440, \amp, 0, \vibratoDepth
 // play, vol control
 (
 var osc = NetAddr.new("localhost", 57110);
-var masterVol = 1;
+var masterVol = 0.0;
 
 osc.sendMsg("/n_set", ~scene1n1, \amp, 1*masterVol);
 osc.sendMsg("/n_set", ~scene1n2, \amp, 1*masterVol);
@@ -146,7 +146,7 @@ osc.sendMsg("/n_set", ~scene1n5, \amp, 1*masterVol);
 (
 var osc = NetAddr.new("localhost", 57110);
 var ice = 0.3;
-var parFreq = 2;
+var parFreq = 3;
 
 osc.sendMsg("/n_set", ~scene1n1, \ice, 0.7*ice, \parFreq, 2*parFreq);
 osc.sendMsg("/n_set", ~scene1n2, \ice, 0.3*ice, \parFreq, 4*parFreq);
@@ -167,7 +167,7 @@ osc.sendMsg("/n_set", ~scene1n4, \freq, 440/8, \amp, 1);
 
 (
 var osc = NetAddr.new("localhost", 57110);
-var vibrato = 0.3;
+var vibrato = 2;
 
 osc.sendMsg("/n_set", ~scene1n1, \vibratoDepth, 1*vibrato, \vibratoFreq, 1);
 osc.sendMsg("/n_set", ~scene1n2, \vibratoDepth, 0.7*vibrato, \vibratoFreq, 3);
@@ -184,7 +184,7 @@ Ndef(\fire).play(vol: 0, numChannels: 2, fadeTime: 1);
 Ndef(\fire).stop;
 Ndef(\fire).clear;
 (
-Ndef(\fire,{|amp = 3, freq = 0.8, lpf = 100000, hpf = 800|
+Ndef(\fire,{|amp = 3.0, freq = 0.8, lpf = 100000, hpf = 800|
 	x=DelayL.ar(n=Ndef(\fire);n.ar,2,LFNoise0.kr(3.5*_!4)+1)+Blip.ar(freq);
 	y=amp*LeakDC.ar(HPF.ar(LPF.ar(x+x.mean*0.15,lpf), hpf)).sin;
 	y
@@ -199,7 +199,7 @@ Ndef(\fire).set(\amp, 0);
 
 (
 var osc = NetAddr.new("localhost", 57110);
-var masterVol = 1;
+var masterVol = 0.0;
 var ice = 0.8;
 
 osc.sendMsg("/n_set", ~scene1n1, \vibratoDepth, \freq, 369.994, \amp, masterVol, \parFreq, 0.3, \pan2Freq, 0.1, \vibratoDepth, 0.3, \vibratoFreq, 3, \actave, 1, \reverb, 0.7, \ice, ice);
