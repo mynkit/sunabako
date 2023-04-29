@@ -1,0 +1,518 @@
+bpm = 80
+
+setcps (bpm/60/4)
+
+all $ (|* gain 1.5)
+
+d10
+  $ slow 3
+  $ (|+ n 12)
+  $ s "zure"
+  # n "<a3,e4,b3,fs4>"
+  # gain 0.4
+  # sustain 10
+  # pingpong 0.4 # pingpongt (1/4) # pingpongfb 0.6
+  # theta 0 # dis 1
+  # room 0.5 # sz 0.7
+  # scReverb 1 # ice 0.6
+
+
+do
+  setF "rain" 1
+  setF "pond" 1
+  setFm "tremolorate" 3
+  setFm "synthDis" 1
+  setFm "synthTheta" 0
+  setFm "synthIsMute" 0
+  setFm "synthAmp" 1
+  setFm "bird1Dis" 1
+  setFm "bird1Theta" 0
+  setFm "bird1IsMute" 0
+  setFm "bird1Amp" 1
+  setFm "bird2Dis" 1
+  setFm "bird2Theta" 0
+  setFm "bird2IsMute" 0
+  setFm "bird2Amp" 1
+  setFm "crowDis" 1
+  setFm "crowTheta" 0
+  setFm "crowIsMute" 0
+  setFm "crowAmp" 1
+  setFm "doveDis" 1
+  setFm "doveTheta" 0
+  setFm "doveIsMute" 0
+  setFm "doveAmp" 1
+
+getStatem "synthTheta"
+
+do
+  d1
+    $ (|* gain 1.5)
+    -- $ someCyclesBy 0.1 (degradeBy 1)
+    $ sometimesBy 0.4 (degradeBy 1)
+    $ sometimesBy 0.2 (0.0005 ~>)
+    $ sometimesBy 0.4 (0.001 ~>)
+    $ sometimesBy 0.2 (0.0015 ~>)
+    $ someCyclesBy 0.4 ((|+ n "-33 -31 -25 -20 -10 -5 0").(|* sustain "3.9 3.3 2.5 2 1 1 1").(density "1.5 2 1.5 1.5 1 1").(# theta (fast 0.6 line)).(# dis (range 0.1 1 tri)).(|* gain 0.8))
+    $ (|* gain (range 1.6 0.8 (rand)))
+    $ (|* gain (range 0 0.27 (fast 15 rand)))
+    $ s "[SinOscSynthBend]*80"
+    # sustain (range 0.008 0.1 (rand))
+    # accelerate (range 0 8 (rand))
+    # n (range 50 (-20) (rand))
+    # lpf 500
+    # room (range 0.1 0.2 $ slow 4 tri) # sz 0.8
+    # theta (range (-1) 1 (fast 37 rand))
+    -- # dis (range 0.7 1 $ slow 2 rand)
+    # dis (range 0.1 1 $ fast 1.5 tri)
+    -- # gain 1.0
+    # gain (sqrt <$>(cF 0 "pond"))
+  d2
+    $ (|* gain 1.8)
+    $ sometimesBy 0.3 (degradeBy 1)
+    $ sometimesBy 0.2 (0.0005 ~>)
+    $ sometimesBy 0.4 (0.001 ~>)
+    $ sometimesBy 0.2 (0.0015 ~>)
+    $ (|* gain (range 0.35 0.5 (rand*rand)))
+    $ (|* gain (range 0.1 0.43 (fast 16 rand)))
+    $ s "[SinOscSynthBend?]*200"
+    # sustain (range 0.02 0.08 (rand*rand))
+    # accelerate (range 0 1 (rand*rand))
+    # n (range 35 10 (rand*rand))
+    # theta (range (-0.6) (-0.4) (fast 49 rand))
+    # dis 1
+    # room 0.2 # sz 0.2
+    # lpf 2000
+    # hpf 20
+    # gain (sqrt <$>(cF 0 "rain"))
+  d3
+    $ (|* gain 1.5)
+    $ fast (range 2 5 rand)
+    $ sometimesBy 0.4 (degradeBy 1)
+    $ (|* gain (range 0.1 1 rand))
+    $ (|* gain "[0.37 0.02]*5")
+    $ s "nailClapper*10"
+    # n "<0,30>"
+    # theta (range (0.2) (0.45) rand)
+    # dis 1
+    # sustain (range 0.1 0.3 rand*rand)
+    # room 0.5 # sz 0.9
+    # lpf (range 2000 1500 rand*rand)
+    # gain (sqrt <$>(cF 0 "rain"))
+
+
+d5
+  $ (|* gain 0.8)
+  $ mix ((|+ n 12).(|* gain (range 0.9 0.85 rand)))
+  $ mix ((# n "b6").(|* gain (range 0.45 0.5 (fast 3 rand))))
+  $ (|* sustain (107/bpm))
+  $ s "toumeiSynth/2"
+  # gain 0.52
+  # n "<b4,a5,cs5,e5>"
+  # voice 2 # shape 0.3
+  # sustain (range 4.95 5.05 rand)
+  # scReverb 0.9 # ice 0.3
+  # room 0.8 # sz 0.8
+
+
+mod5 silence
+
+mod5
+  $ segment 64
+  $ pF "vibrato" (range 0 1.5 $ fast 0.5 saw)
+  # pF "vrate" (range 4 10 $ fast 0.3 rand)
+  -- # tremolorate (range 3 5 $ slow 11 $ sine)
+  # tremolorate (cF 0 "tremolorate")
+  # tremolodepth (range 0.5 0.8 $ slow 30 $ sine)
+  # theta 0 # dis 1
+  -- # theta (fast 20 line) # dis 0.5
+  -- # theta (cF 0 "synthTheta") # dis (cF 0 "synthDis")
+  # hpf 450
+  # amp 0
+
+d4
+  $ (|* sustain (107/bpm))
+  $ s "superhammondBend/2"
+  # n "<a1>"
+  # sustain 4.55
+  # room 0.8 # sz 0.8
+  # gain 0.5
+
+
+mod4
+  $ segment 64
+  $ lpf 200
+  # amp 0.0
+
+do
+  let
+    harakamiSine note amp sus = (|* gain amp)
+      $ s "SinOscSynthBend"
+      # n note
+      # sustain sus
+      # gain 0.8
+      # room 0.8 # sz 0.1
+      # vibratoFreq 0.4 # vibratoDepth 0.2
+    harakamiSinePat1 catFunk = sometimesBy 0.3 (rev)
+      $ (|- n 5)
+      $ sometimesBy 0.05 (|* sustain 2)
+      $ (|* sustain 0.8)
+      $ sometimesBy 0.2 ((|+ n 12).(|* gain 0.9))
+      $ ((# theta (range (-1) 1 $ fast 2 sine)).(# dis 0.7))
+      $ fast 4
+      $ catFunk [
+        harakamiSine "<c5,f5>" 0.57 10,
+        s "~",
+        harakamiSine "<g4>" 0.7 10,
+        s "~",
+        harakamiSine "<a5>" 0.74 10,
+        harakamiSine "<e5,c6>" 0.6 10,
+        s "~",
+        (0.5~>) $ harakamiSine "<d5,a4,g4>" 0.55 10,
+        s "~",
+        harakamiSine "<c5,f5>" 0.58 20,
+        harakamiSine "<e5>" 0.7 10,
+        harakamiSine "<c5,g4,g5>" 0.5 24,
+        s "~", s "~",
+        (0.5~>) $ harakamiSine "<a5>" 0.74 10,
+        s "~", s "~",
+        harakamiSine "<g5>" 0.7 10,
+        harakamiSine "<d5,a4,g4>" 0.55 15,
+        s "~",
+        harakamiSine "<d5>" 0.67 19,
+        s "~",
+        harakamiSine "<e4>" 0.65 19,
+        s "~",
+        harakamiSine "<f5>" 0.65 19,
+        s "~",
+        harakamiSine "<f4>" 0.65 19,
+        (0.5~>) $ harakamiSine "<g5>" 0.72 5,
+        harakamiSine "<a5>" 0.73 10
+      ]
+  d8
+    $ (|* gain 0.8)
+    $ harakamiSinePat1 randcat
+
+
+d7
+  $ (|* gain 0.53)
+  $ fast 16
+  $ (|+ n 11)
+  $ when ((flip elem [14,15]).(flip mod 16)) (|* gain 0)
+  $ when ((/=0).(flip mod 3)) (|* gain 0)
+  $ s "SinOscSynthBend"
+  # n "<af3,af4,af5>" # hpf 1000 # lpf 1100
+  # sustain 0.02
+  # theta (range (0.3) (0.7) $ fast 5 $ sine)
+  # freeverb 0.3 # size 0.4
+  # gain (range (0.85) (0.93) $ fast 3 $ rand)
+
+d8
+  $ (|* gain 0.7)
+  $ sometimesBy 0.3 ((1/16)<~)
+  $ sometimesBy 0.2 (while "f t" (|* gain 0))
+  $ sometimesBy 0.4 (
+    while "f t" (mix ((|* gain 0.8).((1/16)<~))))
+  $ sometimesBy 0.3 (density 2)
+  $ s "~ click:2 [~ [~click:2]] ~"
+  # gain 1.0 # lpf 270 # hpf 100 # hpq 0.2
+  # theta (range (-0.3) (-0.7) $ fast 5 $ sine)
+
+
+d9
+  $ (|* gain 1.1)
+  $ slow (range 4.25 4 rand)
+  $ somecyclesBy 0.4 (degradeBy 1)
+  $ (|* gain (range 0.5 0.6 rand))
+  $ s "turtledove/2"
+  # n "<f7>"
+  # vibratoDepth 0.7 # vibratoFreq 50
+  # pitch1 0.03
+  # sustain 0.8
+  # gain 0.95
+  # room 0.9 # sz 0.9
+  # pingpong 0.5 # pingpongt (3/8) # pingpongfb 0.4
+  # dis 1 # theta (-0.5)
+
+do
+  d6 silence
+  d8 silence
+  d5 silence
+
+
+-- scene1
+
+d6
+  $ mix ((|* gain 0.58).(|+ n 12))
+  $ (|+ n 24)
+  $ s "[~ supergong/3]"
+  # n "[<d5>]*6"
+  # room 0.8 # sz 0.9
+  # hpf 100
+  # gain 0.65
+  # sustain 1
+  # shape 0.2
+  -- # pingpong 0.6 # pingpongt (3/16) # pingpongfb 0.7
+
+d7
+  $ slow 2.5
+  $ s "~ coin"
+  # theta (range 1 (-1) rand) # dis 1
+  # scReverb 1
+  # room 0.4 # sz 0.9
+  # gain 0.75
+
+d8
+  $ sometimesBy 0.3 ((1/16)<~)
+  $ sometimesBy 0.2 ((1/8)~>)
+  $ sometimesBy 0.2 ((5/8)~>)
+  $ sometimesBy 0.2 (# degree 2)
+  $ sometimesBy 0.2 (while "f t" (|* gain 0))
+  $ sometimesBy 0.4 (
+    while "f t" (mix ((|* gain 0.9).((1/16)<~))))
+  $ s "~ click:2 [~ [~click:2]] ~"
+  # gain 1 # lpf 150 # hpf 30 # hpq 0.3
+  # theta 0 # dis 0
+
+
+d3
+  $ (|* gain 1)
+  $ fast 2
+  $ (|* gain (range 0.1 1 sine))
+  $ (|- n 10)
+  $ sometimesBy 0.6 ((density $ range 2 3 $ rand*rand).(|* gain 0.7).(|- n 12))
+  $ sometimesBy 0.4 (degradeBy 1)
+  $ sometimesBy 0.3 ((1/12)~>)
+  $ mix ((|* gain 0.5).(|- n 12).(# room 0.1))
+  $ s (fit 0 ["supergong"] "0 ~ 0!3 ~ 0 ~ 0 ~ 0 ~")
+  # sustain 1
+  # n "c7"
+  # gain 0.4
+  # theta (range (-1) 1 $ slow 3 $ rand)
+  # room 0.3
+
+-- scene2
+
+d10
+  $ slow 4
+  $ (0.99 ~>)
+  $ (|* gain 0.55)
+  $ ((# room 0.8).(# sz 0.9))
+  $ ((# theta 0).(# dis 1))
+  $ ((# pingpong 0.6).(# pingpongt (1/4)).(# pingpongfb 0.3))
+  $ (# lpf 3000)
+  $ ((# hpf 60).(# hpq 0.4))
+  $ every' 2 1 (const $ s "Gadd9" # n (irand 2))
+  $ every' 2 0 (const $ s "Aadd9" # n (irand 2))
+  $ s "~"
+
+
+once
+  $ s "Aadd9"
+  # n (irand 2)
+  # gain 0.55
+  # room 0.8 # sz 0.1
+  # orbit 11
+
+once
+  $ s "Gadd9"
+  # n (irand 2)
+  # gain 0.55
+  # room 0.8 # sz 0.1
+  # orbit 11
+
+once'
+  $ s "~ brushing" # gain 0.55
+  # pingpong 0.3 # pingpongt (3/16) # pingpongfb 0.7
+  # orbit 11
+
+d7
+  $ fast (range 5 8 rand)
+  $ (|* gain (range 1 0.9 rand))
+  $ s "SinOscSynthBend*8"
+  # n (choose [2,3,4,5])
+  # sustain (range 0.0004 0.0006 rand)
+  # theta (range (-1) 1 $ fast 1.5 rand)
+  # gain 0.6
+
+once
+  $ s "harmonics"
+  # n 0 # up (-5)
+  # orbit 11
+  # gain 0.6
+  # room 0.8 # sz 0.8
+  # theta (range (-1) 1 rand) # dis 1
+
+d9
+  $ sometimesBy 0.3 (mix (0.25 ~>).(|+ n 2))
+  $ sometimesBy 0.1 (mix (0.5 ~>).(|+ n 1))
+  $ sometimesBy 0.8 ((mix (|+ n 3)).(|* gain 0.9))
+  $ sometimesBy 0.4 ((mix (|+ n 1)).(|* gain 0.9))
+  $ sometimesBy 0.5 (0.25 ~>)
+  $ (|+ n (sig $ \t -> (fromRational t)))
+  $ s "harmonics [~ harmonics]"
+  # n "0 2"
+  # speed (choose [1,1,1,2,0.5,(-1),(-0.5)])
+  # gain 0.6
+  # room 0.8 # sz 0.8
+  # theta (range (-1) 1 rand) # dis 1
+
+once'
+  $ s "harmonics/2"
+  # n "<0,1,2,3,4>"
+  # gain 0.5
+  # up (choose [(-7), (-5)])
+  # room 0.8 # sz 0.8
+  # theta (choose [(-0.5), 0.5]) # dis 1
+  # orbit 11
+
+once
+  $ mix (|+ n 12)
+  $ s "~ FastSinSynth ~ ~"
+  # n "<a6>"
+  # gain 0.4
+  # room 0.6 # sz 0.8
+  # sustain 10
+  # theta 0.3
+  # orbit 11
+
+-- scene3
+
+d5
+  $ (|* gain 0.7)
+  -- $ (|- n 12)
+  $ every' 4 3 (|+ n (-2))
+  $ every' 4 2 (|+ n 5)
+  $ (|* sustain ((107/bpm)*0.5))
+  $ s "superhammondBend/4"
+  # gain 0.7
+  # n "<a3,a4,b4,e5>"
+  # voice 2
+  # scReverb 0.9 # ice 0.3
+  # room 0.8 # sz 0.8
+  # sustain 4.6
+
+mod5
+  $ segment 64
+  $ pF "vibrato" 0.7
+  # pF "vrate" 4
+  # tremolorate (range 3 5 $ slow 11 $ sine)
+  # tremolodepth (range 0.1 0.2  $ slow 30 $ sine)
+  # theta (fast 0.5 line) # dis 1
+  -- # theta (cF 0 "synthTheta") # dis (cF 0 "synthDis")
+  # hpf 50
+  # amp 0.05
+
+
+d6
+  $ (|* gain 0.6)
+  $ someCyclesBy 0.15 ((ply "6").(|* gain 0.8))
+  $ (|> lpf (range 1100 8500 (slow 2 $ sine)))
+  $ (|> cut 1)
+  $ fast 8
+  $ swingBy (1/12) 8
+  $ someCyclesBy 0.7 (every' 24 23 (const $ s "[tableware tableware] footsteps*4" # n (range 1 9 rand) # gain "1.1 [0.8 0.9 1.0 1.1]" # speed "-0.8 1" # pan "0.5 [0.8 0.6 0.4 0.2]"))
+  $ every' 8 7 (const $ s "[tableware tableware] bubble*4" # n (range 1 9 rand) # gain "1.1 [0.8 0.9 1.0 1.1]" # speed "-0.8 1" # pan "0.5 [0.2 0.4 0.6 0.8]")
+  $ sometimesBy 0.3 (jux(rev))
+  $ s "tableware [tableware ~]"
+  # n (range 0 20 rand)
+  # gain "1.0 [1.2 1.0]"
+  # cut 1
+
+d7
+  $ sometimesBy 0.1 ((ply (choose [6,4])).(|* gain 0.9))
+  $ sometimesBy 0.95 (jux ((rev).(|- n 30).(|* gain 1.1).(|* theta (-1))))
+  $ sometimesBy 0.2 ((1/8)~>)
+  $ slow 8
+  $ sometimesBy 0.5 (jux(rev))
+  $ s (fit 0 ["noiseman"] "0*2 ~ ~ 0 ~ ~ 0*2 ~ ~ 0*2 ~ ~ 0 ~ ~ 0 ~ ~ 0*2 ~ ~ 0 ~ ~ 0*2 ~ ~ 0*2 ~ ~ 0 ~")
+  # sustain (range 0.02 0.04 rand)
+  # n (choose [45,50,55,60])
+  # slide 4
+  # sustainpedal 0.4
+  # gain 0.6
+  # theta (-0.4)
+
+d3
+  $ (|* gain 0.35)
+  $ fast (2)
+  $ sometimesBy 0.2 (degradeBy 1)
+  $ (|+ n (choose [20, 28, 24, 32]))
+  $ mix ((|* gain 0.58).(|+ n 12))
+  $ (|+ n 24)
+  $ s "~ ~ [~ [~superfm/2]] ~"
+  # n "[<e5,a5>]"
+  # sustain 0.3
+  # room 0.6
+  # hpf 300
+  # gain 0.43
+  # theta (-0.5) # dis 1
+  # shape 0.2
+
+
+-- scene4
+
+
+d6
+  $ (|* gain 1.2)
+  $ slow (range 4.25 4 rand)
+  $ somecyclesBy 0.4 (degradeBy 1)
+  $ (|* gain (range 0.5 0.6 rand))
+  $ s "turtledove/2"
+  # n "<f7>"
+  # vibratoDepth 0.7 # vibratoFreq 50
+  # pitch1 0.03
+  # sustain 0.8
+  # gain 0.95
+  # room 0.9 # sz 0.9
+  # pingpong 0.5 # pingpongt (3/8) # pingpongfb 0.4
+  # dis 1 # theta (-0.5)
+
+
+d7
+  $ (|* gain 0.6)
+  $ slow 3
+  $ degradeBy 0.3
+  $ s "[~ carrionCrow ~]!2 ~!12"
+  # sustain 0.3
+  # theta (range (-0.2) (-0.35) sine) # dis 1
+  # freeverb 0.3
+  # scReverb 0.15
+  # lpf 2000
+  # gain 1
+
+
+d8
+  $ (|* gain 1.5)
+  $ degradeBy 0.7
+  $ (|* gain (range 0.21 0.35 (fast 31 (rand*rand))))
+  $ s "frog"
+  # theta (range 0.4 0.5 (fast 17 $ rand)) # dis 1
+  # room 0.01
+  # scReverb 0.05
+  # gain 1
+
+d9
+  $ (|* gain 0.7)
+  $ someCyclesBy 0.4 ((|- n (choose [1, 3])).(|* gain 0.96))
+  $ someCyclesBy 0.6 (degradeBy 1)
+  $ fast 5
+  $ sometimesBy 0.2 (degradeBy 1)
+  $ (|* gain (range 0.6 0.85 sine))
+  $ s "insects"
+  # n "b6"
+  # lpf 3500
+  # theta (range (-0.4) (-0.8) (fast 13 $ rand)) # dis 1
+  # gain 1
+
+d10
+  $ (|* gain 1.2)
+  $ slow 5
+  $ someCyclesBy 0.2 (degradeBy 1)
+  $ (|* gain (range 0.75 0.85 sine))
+  $ s "jungleCrow!2 jungleCrow? ~!15"
+  # sustain (range 0.58 0.7 rand)
+  # room 0.4 # size 0.9
+  # theta (range (0.05) (-0.2) sine) # dis 1
+  # lpf 210
+  # vibratoDepth 2
+  # gain 1
