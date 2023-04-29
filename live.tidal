@@ -2,19 +2,26 @@ bpm = 80
 
 setcps (bpm/60/4)
 
-all $ (|* gain 1.5)
+all $ (|* gain 1.2)
 
 d10
-  $ slow 3
-  $ (|+ n 12)
-  $ s "zure"
-  # n "<a3,e4,b3,fs4>"
-  # gain 0.4
-  # sustain 10
-  # pingpong 0.4 # pingpongt (1/4) # pingpongfb 0.6
+  $ (|* gain 1)
+  $ slow 2
+  -- $ (|+ n 2)
+  $ stack[
+    -- (|+ n 12) $
+    s "zure"
+    # n "<e4,b4,g4,d4>"
+    # gain 0.5 # sustain 20
+    ,
+    s "SinOscSynthBend"
+    # n "a2"
+    # gain 0.55 # sustain 20 # shape 0.2
+  ]
+  # pingpong 0.2 # pingpongt (1/4) # pingpongfb 0.8
   # theta 0 # dis 1
   # room 0.5 # sz 0.7
-  # scReverb 1 # ice 0.6
+  # scReverb 1 # ice 0.1
 
 
 do
@@ -102,6 +109,7 @@ do
 
 d5
   $ (|* gain 0.8)
+  $ (|- n 12)
   $ mix ((|+ n 12).(|* gain (range 0.9 0.85 rand)))
   $ mix ((# n "b6").(|* gain (range 0.45 0.5 (fast 3 rand))))
   $ (|* sustain (107/bpm))
@@ -120,14 +128,14 @@ mod5
   $ segment 64
   $ pF "vibrato" (range 0 1.5 $ fast 0.5 saw)
   # pF "vrate" (range 4 10 $ fast 0.3 rand)
-  -- # tremolorate (range 3 5 $ slow 11 $ sine)
-  # tremolorate (cF 0 "tremolorate")
+  # tremolorate (range 0 1 $ slow 11 $ sine)
+  -- # tremolorate (cF 0 "tremolorate")
   # tremolodepth (range 0.5 0.8 $ slow 30 $ sine)
-  # theta 0 # dis 1
-  -- # theta (fast 20 line) # dis 0.5
+  -- # theta 0 # dis 1
+  # theta (fast 2 line) # dis 0.5
   -- # theta (cF 0 "synthTheta") # dis (cF 0 "synthDis")
   # hpf 450
-  # amp 0
+  # amp 0.5
 
 d4
   $ (|* sustain (107/bpm))
@@ -141,7 +149,7 @@ d4
 mod4
   $ segment 64
   $ lpf 200
-  # amp 0.0
+  # amp 0.1
 
 do
   let
