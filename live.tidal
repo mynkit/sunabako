@@ -5,8 +5,9 @@ setcps (bpm/60/4)
 all $ (|* gain 1.2)
 
 d10
-  $ (|* gain 1)
+  $ (|* gain 1.1)
   $ slow 2
+  $ somecyclesBy 0.1 ((1/16) ~>)
   -- $ (|+ n 2)
   $ stack[
     -- (|+ n 12) $
@@ -14,6 +15,7 @@ d10
     # n "<e4,b4,g4,d4>"
     # gain 0.5 # sustain 20
     ,
+    ((1/16) ~>) $
     s "SinOscSynthBend"
     # n "a2"
     # gain 0.55 # sustain 20 # shape 0.2
@@ -23,6 +25,40 @@ d10
   # room 0.5 # sz 0.7
   # scReverb 1 # ice 0.1
 
+d11
+  $ fast 2
+  $ (|- up (choose [12,0]))
+  $ every' 4 1 ((1/8) ~>)
+  $ s "harmonics"
+  # n (choose [0,3]) # up "<0 5 12 16>"
+  # room 0.9 # sz 0.9
+  # pingpong 0.5 # pingpongt (3/16) # pingpongfb 0.8
+  # gain 0.6
+
+d9
+  $ (|* gain 1.1)
+  $ ((# pingpong 0.5).(# pingpongt (3/16)).(# pingpongfb 0.8))
+  $ ((# room 0.6).(# sz 0.1))
+  $ every' 2 1 (const $ s "guitar" )
+  $ s "[~guitar] ~ ~ [~ [~ guitar/2]]"
+  # up "0 0 0 -1"
+
+d12
+  $ slow 4
+  $ mix (|+ n 12)
+  $ s "~ ~ [~ [~FastSinSynth]] ~"
+  # n "<a6>"
+  # gain 0.5
+  # room 0.6 # sz 0.8
+  # sustain 10
+  # theta (choose [(-0.3), 0.3]) # dis 1
+  # orbit 11
+
+once
+  $ s "brushing" # gain 0.65
+  # delay 0.8 # delayt (3/8) # delayfb 0.7 # lock 1
+  # theta (range (-0.5) 0.5 rand) # dis 1
+  # orbit 11
 
 do
   setF "rain" 1
